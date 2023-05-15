@@ -22,6 +22,8 @@ import 'editor.dart';
 /// called.
 const Duration _kDragSelectionUpdateThrottle = Duration(milliseconds: 50);
 
+typedef DragSelectionUpdateCallback = void Function(DragStartDetails startDetails, DragUpdateDetails updateDetails);
+
 /// The text position that a give selection handle manipulates. Dragging the
 /// [start] handle always moves the [start]/[baseOffset] of the selection.
 enum _TextSelectionHandlePosition { start, end }
@@ -1247,7 +1249,7 @@ class _EditorTextSelectionGestureDetectorState
       gestures[LongPressGestureRecognizer] =
           GestureRecognizerFactoryWithHandlers<LongPressGestureRecognizer>(
         () => LongPressGestureRecognizer(
-            debugOwner: this, kind: PointerDeviceKind.touch),
+            debugOwner: this, supportedDevices: <PointerDeviceKind>{PointerDeviceKind.touch}),
         (LongPressGestureRecognizer instance) {
           instance
             ..onLongPressStart = _handleLongPressStart
@@ -1265,7 +1267,7 @@ class _EditorTextSelectionGestureDetectorState
       gestures[HorizontalDragGestureRecognizer] =
           GestureRecognizerFactoryWithHandlers<HorizontalDragGestureRecognizer>(
         () => HorizontalDragGestureRecognizer(
-            debugOwner: this, kind: PointerDeviceKind.mouse),
+            debugOwner: this, supportedDevices: <PointerDeviceKind>{PointerDeviceKind.mouse}),
         (HorizontalDragGestureRecognizer instance) {
           instance
             // Text selection should start from the position of the first pointer
